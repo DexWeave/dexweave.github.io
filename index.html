@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DexWeave learns dexterous humanoid loco-manipulation from human demonstrations through interaction-consistent retargeting and anatomy-aware policy learning.">
+  <meta name="theme-color" content="#faf9f6">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DexWeave — Learning Dexterous Humanoid Loco-Manipulation">
+  <meta property="og:description" content="Interaction-consistent retargeting and anatomy-aware whole-body policy learning.">
+  <meta property="og:url" content="https://dexweave.github.io/">
+  <meta property="og:image" content="https://dexweave.github.io/assets/teaser.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://dexweave.github.io/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/vendor/bulma.min.css">
+  <link rel="stylesheet" href="assets/vendor/bulma-carousel.min.css">
+  <link rel="stylesheet" href="styles.css?v=20260924-5">
+  <script src="assets/vendor/bulma-carousel.min.js" defer></script>
+  <script src="gallery.js" defer></script>
+  <title>DexWeave | Dexterous Humanoid Loco-Manipulation</title>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="hero-body"><div class="container is-max-desktop has-text-centered">
+        <h1 class="title is-1 publication-title"><img class="publication-logo" src="assets/dexweave-logo.svg" width="388" height="72" alt="DexWeave"></h1>
+        <h2 class="subtitle is-2 publication-title">Learning Dexterous Humanoid Loco-Manipulation<br class="desktop-break"> from Human Demonstrations</h2>
+        <p class="review-status">Under Review</p>
+      </div></div>
+    </section>
+    <section class="hero teaser"><div class="container is-max-desktop">
+      <figure>
+      <a href="assets/teaser.webp" target="_blank" rel="noopener" aria-label="Open teaser at full resolution"><img src="assets/teaser.webp" srcset="assets/teaser-small.webp 1200w, assets/teaser.webp 2400w" sizes="(max-width: 1000px) calc(100vw - 40px), 960px" width="2400" height="849" fetchpriority="high" alt="Unitree G1 humanoids performing diverse whole-body motions and dexterous interactions with everyday objects."></a>
+          </figure>
+      <p class="tldr"><strong>TL;DR</strong> DexWeave turns human demonstrations into interaction-consistent robot motions, then learns an anatomy-aware policy to coordinate locomotion and dexterous hands.</p>
+    </div></section>
+    <section class="section" id="abstract"><div class="container is-max-desktop">
+      <h2 class="title is-2 has-text-centered">Abstract</h2>
+      <div class="reading content has-text-justified">
+        <p>Learning dexterous humanoid loco-manipulation from human demonstrations requires preserving demonstrated interactions across embodiment differences and realizing them under robot dynamics. Independent body and hand retargeting can disrupt coordination between wrist placement and finger articulation, while accurate kinematic references alone do not guarantee physically consistent hand–object interaction. We present <strong>DexWeave</strong>, a unified framework that bridges interaction-consistent motion retargeting and whole-body policy learning for dexterous humanoid loco-manipulation. A two-stage retargeting pipeline first initializes whole-body motions with specialized body and hand solvers, then jointly refines the upper-body interaction chain while preserving lower-body support. Based on these references, an anatomy-aware Transformer policy organizes whole-body control through regional tokens and masked attention, and incorporates object information for dexterous manipulation. This unified controller is trained with reinforcement learning without relying on pretrained trackers or subsequent residual refinement. Experiments across locomotion and loco-manipulation datasets demonstrate improved retargeting quality and interaction consistency, while policy evaluations demonstrate faster convergence and higher manipulation accuracy. Furthermore, we deploy the policy on a real Unitree G1 robot with dexterous Inspire hands.</p>
+      </div>
+        </div></section>
+    <section class="section" id="method"><div class="container is-max-desktop">
+      <h2 class="title is-2 has-text-centered">Method overview</h2>
+      <figure><a href="assets/method-overview.webp" target="_blank" rel="noopener" aria-label="Open Figure 2 at full resolution"><img src="assets/method-overview.webp" srcset="assets/method-overview-small.webp 1200w, assets/method-overview.webp 2101w" sizes="(max-width: 1000px) calc(100vw - 40px), 960px" width="2101" height="797" loading="lazy" decoding="async" alt="Figure 2: DexWeave's pipeline from decoupled body and hand retargeting through upper-body interaction refinement to anatomy-aware policy learning."></a></figure>
+      <p class="reading content has-text-justified">DexWeave first retargets body and hand motions with specialized solvers, then jointly refines the arms, wrists, and fingers while preserving the supporting body motion. An anatomy-aware Transformer uses regional tokens and masked attention to coordinate whole-body control, with object information guiding upper-body interaction. The policy is trained in a single PPO stage to control the 41 actuated joints of a Unitree G1 with Inspire hands.</p>
+        </div></section>
+    <div id="experiments"><div id="videos">
+      <section class="section" id="retargeting-videos"><div class="container">
+        <h2 class="title is-2 has-text-centered">Retargeting results</h2>
+        <div class="simulation-grid desktop-grid" id="retargeting-gallery" aria-label="Retargeting results">
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Retargeting 1</p></div>
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Retargeting 2</p></div>
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Retargeting 3</p></div>
+        </div>
+        <div class="table-scroll" role="region" aria-label="Whole-body feasibility and coarse contact" tabindex="0"><table class="results-table"><caption>Whole-body feasibility and coarse contact</caption><thead><tr><th scope="col" rowspan="2">Dataset</th><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="2">Penetration</th><th scope="colgroup" colspan="2">Foot skating</th><th scope="colgroup" colspan="2">Contact preservation</th></tr><tr><th scope="col">Duration ↓</th><th scope="col">Max depth<br>(cm) ↓</th><th scope="col">Duration ↓</th><th scope="col">Max velocity<br>(m/s) ↓</th><th scope="col">Duration ↑</th><th scope="col">Distance<br>(cm) ↓</th></tr></thead><tbody><tr class="dataset-start "><th class="dataset" scope="rowgroup" rowspan="4">LAFAN1</th><th scope="row">OmniRetarget</th><td>0.125</td><td>2.934</td><td>0.091</td><td>0.416</td><td>N/A</td><td>N/A</td></tr><tr class=""><th scope="row">GMR</th><td>0.183</td><td>4.314</td><td>0.010</td><td>0.548</td><td>N/A</td><td>N/A</td></tr><tr class=""><th scope="row">SOMA</th><td>0.968</td><td>6.379</td><td>0.115</td><td>0.565</td><td>N/A</td><td>N/A</td></tr><tr class="ours"><th scope="row">DexWeave (Ours)</th><td>≈0</td><td>2.575</td><td>0</td><td>0</td><td>N/A</td><td>N/A</td></tr><tr class="dataset-start "><th class="dataset" scope="rowgroup" rowspan="4">OMOMO</th><th scope="row">OmniRetarget</th><td>0.131</td><td>2.735</td><td>≈0</td><td>1.455</td><td>0.644</td><td>10.289</td></tr><tr class=""><th scope="row">GMR</th><td>0.916</td><td>3.117</td><td>0.008</td><td>0.802</td><td>0.879</td><td>7.677</td></tr><tr class=""><th scope="row">SOMA</th><td>0.746</td><td>4.163</td><td>0.034</td><td>0.467</td><td>0.577</td><td>16.205</td></tr><tr class="ours"><th scope="row">DexWeave (Ours)</th><td>0.002</td><td>2.117</td><td>≈0</td><td>0.355</td><td>0.999</td><td>2.944</td></tr></tbody></table></div><p class="table-note">Duration values are frame fractions; ≈0 denotes a near-zero value.</p><div class="table-scroll" role="region" aria-label="Fine-grained interaction retargeting" tabindex="0"><table class="results-table"><caption>Fine-grained interaction retargeting</caption><thead><tr><th scope="col" rowspan="2">Dataset</th><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="2">Penetration</th><th scope="colgroup" colspan="3">Hand alignment</th></tr><tr><th scope="col">Duration ↓</th><th scope="col">Max depth<br>(cm) ↓</th><th scope="col">Primary error<br>(mm) ↓</th><th scope="col">Secondary error<br>(mm) ↓</th><th scope="col">Palm error<br>(°) ↓</th></tr></thead><tbody><tr class="dataset-start "><th class="dataset" scope="rowgroup" rowspan="6">GRAB</th><th scope="row">OmniRetarget + DexPilot</th><td>0.183</td><td>2.123</td><td>209.353</td><td>207.745</td><td>52.122</td></tr><tr class=""><th scope="row">OmniRetarget + DexPilot + IK</th><td>0.212</td><td>2.269</td><td>16.585</td><td>13.368</td><td>11.555</td></tr><tr class=""><th scope="row">OmniRetarget + SBR</th><td>0.184</td><td>2.120</td><td>210.524</td><td>212.985</td><td>52.122</td></tr><tr class=""><th scope="row">OmniRetarget + SBR + IK</th><td>0.190</td><td>2.362</td><td>14.925</td><td>14.659</td><td>9.530</td></tr><tr class=""><th scope="row">DexWeave — decoupled</th><td>0.157</td><td>1.778</td><td>36.033</td><td>36.995</td><td>0.189</td></tr><tr class="ours"><th scope="row">DexWeave — refined (Ours)</th><td>0.001</td><td>1.263</td><td>4.342</td><td>14.476</td><td>3.652</td></tr><tr class="dataset-start "><th class="dataset" scope="rowgroup" rowspan="6">HUMOTO</th><th scope="row">OmniRetarget + DexPilot</th><td>0.370</td><td>3.638</td><td>292.886</td><td>278.574</td><td>47.815</td></tr><tr class=""><th scope="row">OmniRetarget + DexPilot + IK</th><td>0.522</td><td>3.597</td><td>32.389</td><td>31.018</td><td>14.444</td></tr><tr class=""><th scope="row">OmniRetarget + SBR</th><td>0.370</td><td>3.638</td><td>292.750</td><td>283.381</td><td>47.815</td></tr><tr class=""><th scope="row">OmniRetarget + SBR + IK</th><td>0.511</td><td>3.582</td><td>29.999</td><td>28.436</td><td>12.476</td></tr><tr class=""><th scope="row">DexWeave — decoupled</th><td>0.204</td><td>2.568</td><td>32.703</td><td>26.090</td><td>0.159</td></tr><tr class="ours"><th scope="row">DexWeave — refined (Ours)</th><td>0.007</td><td>2.854</td><td>7.198</td><td>11.702</td><td>4.439</td></tr></tbody></table></div><p class="table-note">Primary: thumb and index fingertips. Secondary: remaining fingertips. Palm: palm-normal angular error.</p>
+      </div></section>
+      <section class="section" id="simulation-videos"><div class="container">
+        <h2 class="title is-2 has-text-centered">Simulation results</h2>
+        <div class="simulation-grid desktop-grid" id="simulation-gallery" aria-label="Simulation results">
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Simulation 1</p></div>
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Simulation 2</p></div>
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Simulation 3</p></div>
+        </div>
+        <div class="table-scroll" role="region" aria-label="Body-only motion tracking" tabindex="0"><table class="results-table"><caption>Body-only motion tracking</caption><thead><tr><th scope="col">Actor</th><th scope="col">Episode length<br>(%) ↑</th><th scope="col">Body position<br>(cm) ↓</th><th scope="col">Anchor position<br>(cm) ↓</th><th scope="col">Anchor rotation<br>(deg) ↓</th></tr></thead><tbody><tr><th scope="row">BeyondMimic</th><td>96.542</td><td>4.551</td><td>11.660</td><td>6.010</td></tr><tr class="ours"><th scope="row">DexWeave (Ours)</th><td>97.269</td><td>4.314</td><td>10.801</td><td>5.588</td></tr></tbody></table></div><div class="table-scroll" role="region" aria-label="Dexterous loco-manipulation" tabindex="0"><table class="results-table"><caption>Dexterous loco-manipulation</caption><thead><tr><th scope="col">Actor</th><th scope="col">Success rate<br>(%) ↑</th><th scope="col">Body position<br>(cm) ↓</th><th scope="col">Object position<br>(cm) ↓</th><th scope="col">Object rotation<br>(deg) ↓</th></tr></thead><tbody><tr><th scope="row">WristMimic</th><td>25.72</td><td>9.61</td><td>7.78</td><td>18.70</td></tr><tr><th scope="row">Object MLP</th><td>81.67</td><td>5.75</td><td>8.93</td><td>18.18</td></tr><tr class="ours"><th scope="row">DexWeave (Ours)</th><td>87.60</td><td>5.09</td><td>7.19</td><td>17.72</td></tr></tbody></table></div>
+      </div></section>
+      <section class="section" id="real-robot-videos"><div class="container">
+        <h2 class="title is-2 has-text-centered">Real robot results</h2>
+        <div class="simulation-grid desktop-grid" id="real-robot-gallery" aria-label="Real robot results">
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Real robot 1</p></div>
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Real robot 2</p></div>
+          <div class="simulation-item"><div class="video-placeholder">Coming soon</div><p class="simulation-label">Real robot 3</p></div>
+        </div>
+      </div></section>
+    </div></div>
+  </main>
+  <footer class="footer"><p>Template: <a href="https://omniretarget.github.io/">OmniRetarget</a> / <a href="https://nerfies.github.io/">Nerfies</a>.</p></footer>
+</body>
+</html>
