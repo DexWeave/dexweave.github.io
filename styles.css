@@ -27,6 +27,7 @@ figure + .reading { margin-top: 1.5rem; }
 .mobile-carousel { display: none; }
 .simulation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; max-width: 1140px; margin: 2rem auto 0; }
 .retargeting-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; max-width: 1440px; }
+.retargeting-subtitle { margin: -.6rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.15rem; line-height: 1.4; color: #777; }
 .simulation-item { overflow: hidden; text-align: center; background: white; border-radius: 6px; box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
 .simulation-item video { display: block; width: 100%; height: auto; border-radius: 6px 6px 0 0; }
 .retargeting-item { display: flex; flex-direction: column; }
