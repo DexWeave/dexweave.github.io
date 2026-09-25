@@ -12,9 +12,9 @@ When replacing either image, also update its `-small.webp` version and the HTML 
 
 ## Videos
 
-Each category has three placeholders: `#retargeting-gallery`, `#simulation-gallery`, and `#real-robot-gallery`. Duplicate a `.simulation-item` to add more. Replace its `.video-placeholder` with a video element and a repository-local media path.
+`#retargeting-gallery` contains 20 locally hosted MP4s, with PNG poster frames in `assets/videos/retargeting/posters/`. Its desktop grid has four videos per row. The simulation and real-robot galleries still have three placeholders each. Duplicate a `.simulation-item` to add more, using a repository-local media path.
 
-Edit `.simulation-label` for the caption. Desktop uses the OmniRetarget three-column grid; mobile uses its Bulma Carousel library. `gallery.js` builds the mobile carousel from the same items, so each video only needs to be edited once.
+Edit `.simulation-label` for the caption. The simulation and real-robot galleries use the OmniRetarget three-column desktop grid; mobile uses its Bulma Carousel library. `gallery.js` builds the mobile carousel from the same items, so each video only needs to be edited once.
 
 ## Template and fonts
 
