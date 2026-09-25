@@ -14,10 +14,10 @@ document.querySelectorAll('.simulation-grid').forEach(grid => {
   });
 });
 
-const retargetingVideoObserver = new IntersectionObserver(entries => {
+const resultVideoObserver = new IntersectionObserver(entries => {
   entries.forEach(({ target: video, intersectionRatio }) => {
     if (intersectionRatio >= 0.5) video.play().catch(() => {});
     else video.pause();
   });
 }, { threshold: [0, 0.5] });
-document.querySelectorAll('.retargeting-item video').forEach(video => retargetingVideoObserver.observe(video));
+document.querySelectorAll('.retargeting-item video, #simulation-gallery video, #simulation-gallery-mobile video').forEach(video => resultVideoObserver.observe(video));
