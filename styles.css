@@ -28,6 +28,7 @@ figure + .reading { margin-top: 1.5rem; }
 .simulation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; max-width: 1140px; margin: 2rem auto 0; }
 .retargeting-grid, #simulation-gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; max-width: 1440px; margin-top: 1.5rem; }
 .real-robot-grid, .sim-locomotion-grid { grid-template-columns: repeat(3, calc((100% - 3 * 1.25rem) / 4)); justify-content: center; gap: 1.25rem; max-width: 1440px; margin-top: 1.5rem; }
+.real-robot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .retargeting-subtitle.sim-result-heading { margin-top: 2rem; }
 .retargeting-subtitle { margin: -.6rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.3rem; font-weight: 400; line-height: 1.4; color: #777; }
 .sim-to-sim-subtitle { margin: .35rem auto 0; text-align: center; font-size: 1.05rem; line-height: 1.5; color: #666; }
