@@ -9,7 +9,7 @@ body { background: #faf9f6; color: #4a4a4a; font-family: 'Noto Sans', sans-serif
 .publication-title.title { margin-bottom: 1.5rem; }
 .publication-logo { display: block; width: min(88%, 620px); height: auto; margin: 0 auto; }
 .publication-title.subtitle { margin-top: 0; margin-bottom: 1.5rem; line-height: 1.25; }
-.review-status { margin: 0; color: #555; font-size: 1.15rem; line-height: 1.3; }
+.review-status { margin: 0; color: #555; font-size: 1.3rem; line-height: 1.3; }
 .hero-body { padding: 3rem 1.5rem 2rem; }
 .teaser { padding: 0 1.5rem; }
 figure { margin: 0; }
@@ -30,8 +30,12 @@ figure + .reading { margin-top: 1.5rem; }
 .real-robot-grid { grid-template-columns: repeat(3, calc((100% - 3 * 1.25rem) / 4)); justify-content: center; gap: 1.25rem; max-width: 1440px; margin-top: 1.5rem; }
 .retargeting-subtitle.sim-result-heading { margin-top: 2rem; }
 #simulation-lafan-gallery > .simulation-item:nth-child(5) { grid-column: 2; }
-.retargeting-subtitle, .sim-to-sim-subtitle { margin: -.6rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.3rem; font-weight: 400; line-height: 1.4; color: #777; }
-.retargeting-section h2 + .retargeting-subtitle { margin-top: -.6rem; }
+.retargeting-subtitle { margin: -.6rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.3rem; font-weight: 400; line-height: 1.4; color: #777; }
+.sim-to-sim-subtitle { margin: .35rem auto 0; text-align: center; font-size: 1.05rem; line-height: 1.5; color: #666; }
+.nowrap { white-space: nowrap; }
+.result-group-heading { margin: 2rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.5rem; font-weight: 600; color: #363636; }
+.result-group-heading + .retargeting-subtitle { margin-top: 1rem; }
+.quantitative-heading { margin-top: 2.5rem; }
 .retargeting-section .retargeting-grid + .retargeting-subtitle, .retargeting-section .mobile-carousel + .retargeting-subtitle { margin-top: 2.5rem; }
 .simulation-item { overflow: hidden; text-align: center; background: white; border-radius: 6px; box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
 .simulation-item video { display: block; width: 100%; height: auto; border-radius: 6px 6px 0 0; }
@@ -51,15 +55,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid #209cee; outline-offs
 .table-scroll { overflow-x: auto; margin-top: 2rem; }
 .table-scroll, .table-note { max-width: 1140px; margin-left: auto; margin-right: auto; }
 .results-table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0; text-align: center; font-size: .85rem; font-variant-numeric: tabular-nums; }
-.results-table caption { text-align: left; color: #363636; font-size: 1.12rem; font-weight: 600; padding-bottom: .75rem; }
+.results-table caption { text-align: center; color: #363636; font-size: 1.12rem; font-weight: 600; padding-bottom: .75rem; }
 .results-table th, .results-table td { padding: .65rem .55rem; border-bottom: 1px solid #e4e1d9; vertical-align: middle; }
 .results-table thead th { text-align: center; font-size: .82rem; font-weight: 600; border-bottom: 1px solid #aaa69d; }
 .results-table thead .group-header th { border-bottom: 0; }
+.results-table thead .group-header th[scope="col"] { border-bottom: 1px solid #aaa69d; }
 .results-table thead th[scope="colgroup"] { position: relative; padding-bottom: .8rem; }
 .results-table thead th[scope="colgroup"]::after { content: ""; position: absolute; left: .55rem; right: .55rem; bottom: 0; height: 1px; background: #aaa69d; }
 .results-table tbody th { text-align: center; white-space: nowrap; font-weight: 400; }
 .results-table .dataset { font-style: italic; }
-.results-table .dataset-start > * { border-top: 1px solid #aaa69d; }
 .results-table .ours { background: #f1e9d9; }
 .results-table .ours th { font-weight: 600; }
 .results-table u { text-underline-offset: .12em; }
