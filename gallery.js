@@ -20,4 +20,4 @@ const resultVideoObserver = new IntersectionObserver(entries => {
     else video.pause();
   });
 }, { threshold: [0, 0.5] });
-document.querySelectorAll('.retargeting-item video, #simulation-gallery video, #simulation-gallery-mobile video').forEach(video => resultVideoObserver.observe(video));
+document.querySelectorAll('.retargeting-item video, #simulation-gallery video, #simulation-gallery-mobile video, #real-robot-gallery video, #real-robot-gallery-mobile video').forEach(video => resultVideoObserver.observe(video));
