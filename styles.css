@@ -28,12 +28,13 @@ figure + .reading { margin-top: 1.5rem; }
 .simulation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; max-width: 1140px; margin: 2rem auto 0; }
 .retargeting-grid, #simulation-gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; max-width: 1440px; margin-top: 1.5rem; }
 .retargeting-subtitle, .sim-to-sim-subtitle { margin: -.6rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.3rem; font-weight: 400; line-height: 1.4; color: #777; }
-.retargeting-subtitle + .retargeting-subtitle { margin-top: 2.5rem; }
+.retargeting-section h2 + .retargeting-subtitle { margin-top: -.6rem; }
+.retargeting-section .retargeting-grid + .retargeting-subtitle, .retargeting-section .mobile-carousel + .retargeting-subtitle { margin-top: 2.5rem; }
 .simulation-item { overflow: hidden; text-align: center; background: white; border-radius: 6px; box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
 .simulation-item video { display: block; width: 100%; height: auto; border-radius: 6px 6px 0 0; }
 .retargeting-item { display: flex; flex-direction: column; }
 .retargeting-item video { aspect-ratio: 16 / 9; background: #242424; }
-.retargeting-item .simulation-label { display: flex; flex: 1; align-items: center; justify-content: center; min-height: 3.4rem; }
+.retargeting-item .simulation-label { display: flex; flex: 1; align-items: center; justify-content: center; min-height: 3.4rem; overflow-wrap: anywhere; }
 .simulation-label { margin: 0; padding: .75rem; font-size: .95rem; font-weight: 600; line-height: 1.3; color: #333; }
 #simulation-gallery .simulation-label, #simulation-gallery-mobile .simulation-label { display: flex; align-items: center; justify-content: center; min-height: 4rem; }
 .video-placeholder { display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 9; background: #f1f1f1; color: #8a8a8a; font-size: .85rem; }
