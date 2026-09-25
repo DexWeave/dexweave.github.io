@@ -13,3 +13,11 @@ document.querySelectorAll('.simulation-grid').forEach(grid => {
     control.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); control.click(); } });
   });
 });
+
+const retargetingVideoObserver = new IntersectionObserver(entries => {
+  entries.forEach(({ target: video, intersectionRatio }) => {
+    if (intersectionRatio >= 0.5) video.play().catch(() => {});
+    else video.pause();
+  });
+}, { threshold: [0, 0.5] });
+document.querySelectorAll('.retargeting-item video').forEach(video => retargetingVideoObserver.observe(video));
