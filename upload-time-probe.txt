@@ -1,0 +1,1 @@
+Timestamp visibility test for the anonymous repository.
