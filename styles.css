@@ -4,7 +4,7 @@ html { font-size: 18px; }
 body { background: #faf9f6; color: #4a4a4a; font-family: 'Noto Sans', sans-serif; }
 .container.is-max-desktop { max-width: 1140px; }
 .section > .container:not(.is-fluid) { max-width: 1140px; }
-.section.retargeting-section > .container:not(.is-fluid) { max-width: 1280px; }
+.section.retargeting-section > .container:not(.is-fluid) { max-width: 1440px; }
 .publication-title, .review-status, .teaser { font-family: 'Google Sans', sans-serif; }
 .publication-title.title { margin-bottom: 1.5rem; }
 .publication-logo { display: block; width: min(88%, 620px); height: auto; margin: 0 auto; }
@@ -26,7 +26,7 @@ figure + .reading { margin-top: 1.5rem; }
 /* Video grid and typography adapted from the OmniRetarget template. */
 .mobile-carousel { display: none; }
 .simulation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; max-width: 1140px; margin: 2rem auto 0; }
-.retargeting-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; max-width: 1280px; }
+.retargeting-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; max-width: 1440px; }
 .simulation-item { overflow: hidden; text-align: center; background: white; border-radius: 6px; box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
 .simulation-item video { display: block; width: 100%; height: auto; border-radius: 6px 6px 0 0; }
 .retargeting-item { display: flex; flex-direction: column; }
