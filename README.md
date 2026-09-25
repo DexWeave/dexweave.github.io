@@ -5,7 +5,7 @@ Edit `index.html` for content and `styles.css` for appearance. Commit to `main`,
 ## Figures and tables
 
 - Teaser: manuscript Figure 1, `figures/robot.pdf` → `assets/teaser.webp`.
-- Method: manuscript Figure 2, `figures/retarget_pipeline.pdf` → `assets/method-overview.webp`. Only the surrounding blank page area is cropped.
+- Method: manuscript Figure 2, `figures/retarget_pipeline.pdf` → `assets/method-overview.webp`.
 - Tables: current manuscript experiments and ablation tables. Unreported policy results use an em dash.
 
 When replacing either image, also update its `-small.webp` version and the HTML image dimensions.
