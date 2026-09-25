@@ -27,7 +27,7 @@ figure + .reading { margin-top: 1.5rem; }
 .mobile-carousel { display: none; }
 .simulation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; max-width: 1140px; margin: 2rem auto 0; }
 .retargeting-grid, #simulation-gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; max-width: 1440px; margin-top: 1.5rem; }
-.retargeting-subtitle { margin: -.6rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.3rem; font-weight: 400; line-height: 1.4; color: #777; }
+.retargeting-subtitle, .sim-to-sim-subtitle { margin: -.6rem auto 0; text-align: center; font-family: 'Google Sans', sans-serif; font-size: 1.3rem; font-weight: 400; line-height: 1.4; color: #777; }
 .retargeting-subtitle + .retargeting-subtitle { margin-top: 2.5rem; }
 .simulation-item { overflow: hidden; text-align: center; background: white; border-radius: 6px; box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
 .simulation-item video { display: block; width: 100%; height: auto; border-radius: 6px 6px 0 0; }
@@ -41,7 +41,7 @@ figure + .reading { margin-top: 1.5rem; }
 .footer a { color: #777; text-decoration: underline; }
 a:focus-visible, button:focus-visible { outline: 2px solid #209cee; outline-offset: 3px; }
 @media (max-width: 768px) {
-  .publication-title.title { font-size: 2.5rem; } .publication-title.subtitle { font-size: 1.65rem; } .desktop-break { display: none; } .title.is-2 { font-size: 1.75rem; } .hero-body { padding-top: 2rem; } .section { padding: 2rem 1.25rem; } .teaser { padding-inline: 1.25rem; } .reading, .tldr { font-size: 1rem; } .reading.has-text-justified { text-align: left !important; } .simulation-grid.desktop-grid { display: none; } .mobile-carousel { display: block; margin-top: 1.25rem; } .simulation-item { margin: 6px 8px 14px; } .results-carousel { overflow: hidden; } .slider-navigation-previous, .slider-navigation-next { width: 30px; height: 30px; } .simulation-label { font-size: .9rem; }
+  .publication-title.title { font-size: 2.5rem; } .publication-title.subtitle { font-size: 1.65rem; } .desktop-break { display: none; } .title.is-2 { font-size: 1.75rem; } .hero-body { padding-top: 2rem; } .section { padding: 2rem 1.25rem; } .teaser { padding-inline: 1.25rem; } .reading, .tldr { font-size: 1rem; } .tldr { text-align: justify; } .simulation-grid.desktop-grid { display: none; } .mobile-carousel { display: block; margin-top: 1.25rem; } .simulation-item { margin: 6px 8px 14px; } .results-carousel { overflow: hidden; } .slider-navigation-previous, .slider-navigation-next { width: 30px; height: 30px; } .simulation-label { font-size: .9rem; }
 }
 
 .table-scroll { overflow-x: auto; margin-top: 2rem; }
