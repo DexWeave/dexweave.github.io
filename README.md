@@ -14,7 +14,7 @@ When replacing either image, also update its `-small.webp` version and the HTML 
 
 ## Videos
 
-The galleries use the original repository-local H.264 MP4 files and small JPEG cover images. The page and all covers load first. Every video currently visible on screen then autoplays muted in a loop, with no concurrency cap or playback queue. A video receives its MP4 source on its first visible appearance. Scrolling it offscreen or leaving the page pauses it; returning resumes from the same position and retains the existing source and buffer. Offscreen videos that have never been viewed do not download. The hosting service still controls its own request limits.
+The galleries use compressed H.264 MP4 files at up to 1280×720 (720p), with yuv420p pixels and fast-start metadata. Original frame counts and complete motions are retained; sources below 720p keep their original resolution. All videos are silent and have small JPEG cover images. The page and all covers load first. Every video currently visible on screen then autoplays muted in a loop, with no concurrency cap or playback queue. A video receives its MP4 source on its first visible appearance. Scrolling it offscreen or leaving the page pauses it; returning resumes from the same position and retains the existing source and buffer. Offscreen videos that have never been viewed do not download. The hosting service still controls its own request limits.
 
 Retargeting and Sim-to-Sim Loco-Manipulation videos use four desktop columns. Sim-to-Sim Locomotion has three columns at the same card width. Real robot results has separate three-video Loco-Manipulation and Locomotion grids spanning the full gallery width. Real-robot MP4s have no audio tracks and no visible per-video captions.
 
