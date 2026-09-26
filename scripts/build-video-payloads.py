@@ -3,6 +3,7 @@ import base64
 import hashlib
 import pathlib
 import re
+import subprocess
 
 root = pathlib.Path(__file__).resolve().parents[1]
 index = root / 'index.html'
@@ -10,7 +11,10 @@ html = index.read_text()
 paths = dict.fromkeys(url.split('?')[0] for url in re.findall(r'data-video="([^"]+)"', html))
 for relative in paths:
     video = root / relative
-    data = video.read_bytes()
+    data = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(video), '-map', '0:v:0', '-c', 'copy', '-an', '-map_metadata', '-1', '-movflags', 'frag_keyframe+empty_moov+default_base_moof', '-f', 'mp4', 'pipe:1'], check=True, stdout=subprocess.PIPE).stdout
+    avcc = data.index(b'avcC')
+    codec = 'avc1.' + data[avcc + 5:avcc + 8].hex()
+    duration = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', '-i', 'pipe:0'], input=data, check=True, stdout=subprocess.PIPE).stdout.decode().strip()
     part_size = 1024 * 1024 - 1
     parts = [data[start:start + part_size] for start in range(0, len(data), part_size)]
     for old_part in video.parent.glob(video.name + '.part*.js'):
@@ -18,7 +22,7 @@ for relative in paths:
     for number, part in enumerate(parts, 1):
         encoded = base64.b64encode(part).decode('ascii')
         video.with_suffix(f'.mp4.part{number:02d}.js').write_text('document.currentScript.dispatchEvent(new CustomEvent("video-data",{detail:Uint8Array.from(atob("' + encoded + '"),c=>c.charCodeAt(0))}));\n')
-    html = re.sub(r'data-video="' + re.escape(relative) + r'(?:\?[^"]*)?"(?: data-parts="\d+")?', 'data-video="' + relative + '?v=' + hashlib.sha256(data).hexdigest()[:12] + '" data-parts="' + str(len(parts)) + '"', html)
+    html = re.sub(r'data-video="' + re.escape(relative) + r'(?:\?[^"]*)?"(?: data-parts="\d+")?(?: data-codec="[^"]+")?(?: data-duration="[^"]+")?', 'data-video="' + relative + '?v=' + hashlib.sha256(data).hexdigest()[:12] + '" data-parts="' + str(len(parts)) + '" data-codec="' + codec + '" data-duration="' + duration + '"', html)
 
 def inline_cover(match):
     tag = match[0]

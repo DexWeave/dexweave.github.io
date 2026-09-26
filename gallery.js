@@ -19,26 +19,41 @@ document.querySelectorAll('.simulation-grid').forEach(grid => {
   });
 });
 
-// Load all covers first; start every visible video without a concurrency cap.
+// Start every visible video without waiting for unrelated page assets.
 const frames = [...document.querySelectorAll('.video-frame')];
 const visibleFrames = new Set();
 const players = new Map();
-let pageReady = false;
+const pendingParts = [];
 const updateFrame = frame => {
   let video = players.get(frame);
-  if (!pageReady || document.hidden || !visibleFrames.has(frame)) { video?.pause(); return; }
+  if (document.hidden || !visibleFrames.has(frame)) { video?.pause(); return; }
   if (!video) {
     const poster = frame.querySelector('.video-poster');
     video = document.createElement('video');
     video.controls = video.muted = video.defaultMuted = video.loop = video.playsInline = true;
+    video.disableRemotePlayback = true;
     video.preload = 'auto';
     video.poster = poster.src;
     video.setAttribute('aria-label', frame.getAttribute('aria-label'));
     players.set(frame, video);
     poster.replaceWith(video);
-    // Small data files avoid the anonymous host's large-file processing limit.
+    // Append fragmented MP4 data as it arrives, without waiting for the whole clip.
     const parts = new Array(Number(frame.dataset.parts));
-    let remaining = parts.length;
+    const media = new (window.MediaSource || window.ManagedMediaSource)();
+    let buffer, nextPart = 0;
+    const appendPart = () => {
+      if (!buffer || buffer.updating) return;
+      if (parts[nextPart]) { buffer.appendBuffer(parts[nextPart]); parts[nextPart++] = null; }
+      else if (nextPart === parts.length && media.readyState === 'open') media.endOfStream();
+    };
+    media.addEventListener('sourceopen', () => {
+      media.duration = Number(frame.dataset.duration);
+      buffer = media.addSourceBuffer(`video/mp4; codecs="${frame.dataset.codec}"`);
+      buffer.addEventListener('updateend', () => { appendPart(); updateFrame(frame); });
+      appendPart();
+    }, { once: true });
+    // WebKit binds the source directly; other engines attach its object URL.
+    if (window.ManagedMediaSource) video.srcObject = media; else video.src = URL.createObjectURL(media);
     for (let index = 0; index < parts.length; index++) {
       const source = document.createElement('script');
       const url = new URL(frame.dataset.video, document.baseURI);
@@ -46,24 +61,28 @@ const updateFrame = frame => {
       source.src = url.href;
       source.addEventListener('video-data', ({ detail }) => {
         parts[index] = detail;
-        if (--remaining === 0) { video.src = URL.createObjectURL(new Blob(parts, { type: 'video/mp4' })); updateFrame(frame); }
+        appendPart();
       }, { once: true });
       source.addEventListener('load', () => source.remove(), { once: true });
-      frame.append(source);
+      (pendingParts[index] ||= []).push([frame, source]);
     }
   }
-  if (video.src) video.play().catch(() => {});
+  video.play().catch(() => {});
 };
-const updatePlayback = () => frames.forEach(updateFrame);
+const updatePlayback = () => {
+  frames.forEach(updateFrame);
+  // Submit each visible clip's first part before any clip's second part.
+  pendingParts.flat().forEach(([frame, source]) => frame.append(source));
+  pendingParts.length = 0;
+};
 const pauseVideos = () => players.forEach(video => video.pause());
 const visibilityObserver = new IntersectionObserver(entries => {
   entries.forEach(({ target, isIntersecting }) => {
     if (isIntersecting) visibleFrames.add(target); else visibleFrames.delete(target);
-    updateFrame(target);
   });
+  updatePlayback();
 });
 frames.forEach(frame => visibilityObserver.observe(frame));
-window.addEventListener('load', () => { pageReady = true; updatePlayback(); }, { once: true });
 document.addEventListener('visibilitychange', updatePlayback);
 window.addEventListener('pagehide', pauseVideos);
 window.addEventListener('pageshow', updatePlayback);
