@@ -1,5 +1,7 @@
 # DexWeave project website
 
+[Open the anonymous review site](https://anonymous.4open.science/w/review-site-f533e2f81fcb/index.html).
+
 Edit `index.html` for content and `styles.css` for appearance. Commit to `main`, then refresh the review mirror in the Anonymous GitHub dashboard.
 
 ## Figures and tables
@@ -12,9 +14,9 @@ When replacing either image, also update its `-small.webp` version and the HTML 
 
 ## Videos
 
-`#retargeting-gallery` contains 16 locally hosted MP4s, with PNG poster frames in `assets/videos/retargeting/posters/`. Its desktop grid has four videos per row. `#simulation-gallery` contains 12 locally hosted MP4s, with PNG posters in `assets/videos/simulation/posters/`, arranged four per row. The real-robot gallery still has three placeholders. Duplicate a `.simulation-item` to add more, using a repository-local media path.
+The galleries use repository-local H.264 MP4 files and PNG poster frames. Keep one MP4 source per video to limit requests to the anonymous review host. Retargeting and Sim-to-Sim videos use four desktop columns; Real robot results has separate three-video Loco-Manipulation and Locomotion grids. Real-robot MP4s have no audio tracks and no visible per-video captions.
 
-Edit `.simulation-label` for the caption. The real-robot gallery uses the OmniRetarget three-column desktop grid; mobile uses its Bulma Carousel library. `gallery.js` builds the mobile carousel from the same items, so each video only needs to be edited once.
+Edit a video's `aria-label` for its accessible description and `.simulation-label` where a visible caption is used. `gallery.js` builds the mobile carousels from the desktop grids, so each item only needs to be edited once.
 
 ## Template and fonts
 
