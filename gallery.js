@@ -36,9 +36,16 @@ const updateFrame = frame => {
     video.setAttribute('aria-label', frame.getAttribute('aria-label'));
     players.set(frame, video);
     poster.replaceWith(video);
-    video.src = frame.dataset.video;
+    // Load through a script so the anonymous host needs neither byte ranges nor CORS.
+    const source = document.createElement('script');
+    const url = new URL(frame.dataset.video, document.baseURI);
+    url.pathname += '.js';
+    source.src = url.href;
+    source.addEventListener('video-data', ({ detail }) => { video.src = URL.createObjectURL(detail); updateFrame(frame); }, { once: true });
+    source.addEventListener('load', () => source.remove(), { once: true });
+    frame.append(source);
   }
-  video.play().catch(() => {});
+  if (video.src) video.play().catch(() => {});
 };
 const updatePlayback = () => frames.forEach(updateFrame);
 const pauseVideos = () => players.forEach(video => video.pause());

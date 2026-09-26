@@ -18,7 +18,9 @@ The galleries use compressed H.264 MP4 files at up to 1280×720 (720p), with yuv
 
 Retargeting and Sim-to-Sim Loco-Manipulation videos use four desktop columns. Sim-to-Sim Locomotion has three columns at the same card width. Real robot results has separate three-video Loco-Manipulation and Locomotion grids spanning the full gallery width. Real-robot MP4s have no audio tracks and no visible per-video captions.
 
-Edit a frame's `data-video` for the MP4 path and its image's `src` for the cover image. Edit `aria-label` for the accessible description and `.simulation-label` where a visible caption is used. Mobile uses the same cards in a native scroll-snap gallery with previous/next controls; no video nodes are cloned.
+The anonymous host does not provide MP4 byte-range responses. The player loads each visible clip's generated `.mp4.js` payload once and gives its original MP4 bytes to a browser Blob URL. This supplies a local, seekable media source without relying on host range or CORS support. Only the payload is downloaded during playback; MP4 files remain available as downloadable source assets.
+
+Edit a frame's `data-video` for the MP4 path and its image's `src` for the cover image. After adding or replacing a video, run `python3 scripts/build-video-payloads.py` and commit the MP4, generated `.mp4.js`, and updated HTML together. Edit `aria-label` for the accessible description and `.simulation-label` where a visible caption is used. Mobile uses the same cards in a native scroll-snap gallery with previous/next controls; no video nodes are cloned.
 
 ## Template and fonts
 
