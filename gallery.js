@@ -54,6 +54,7 @@ const fillPlayers = () => {
     video.defaultMuted = true;
     video.playsInline = true;
     video.preload = 'none';
+    video.poster = frame.querySelector('.video-poster').src;
     video.setAttribute('aria-label', frame.getAttribute('aria-label'));
     video.addEventListener('ended', () => {
       if ([...visibleFrames.values()].some(candidate => !candidate.played)) {
