@@ -27,42 +27,65 @@ const posterObserver = new IntersectionObserver(entries => {
     posterObserver.unobserve(target);
   });
 }, { rootMargin: '150px' });
-document.querySelectorAll('.video-preview img').forEach(image => posterObserver.observe(image));
+document.querySelectorAll('.video-poster').forEach(image => posterObserver.observe(image));
 
-// Attach the only player and its MP4 source after an explicit click.
-const player = document.createElement('video');
-player.controls = true;
-player.muted = true;
-player.defaultMuted = true;
-player.playsInline = true;
-player.loop = true;
-player.preload = 'none';
-let activePreview = null;
-const releasePlayer = () => {
-  if (!activePreview) return;
-  playbackObserver.unobserve(activePreview.parentElement);
-  player.pause();
-  player.removeAttribute('src');
-  player.load();
-  player.remove();
-  activePreview.hidden = false;
-  activePreview = null;
+// Autoplay only visible cards, with at most two downloads/decoders at a time.
+const visibleFrames = new Map();
+const activePlayers = new Map();
+const releasePlayer = frame => {
+  const video = activePlayers.get(frame);
+  if (!video) return;
+  activePlayers.delete(frame);
+  video.pause();
+  video.removeAttribute('src');
+  video.load();
+  video.remove();
+  frame.querySelector('.video-poster').hidden = false;
+};
+const fillPlayers = () => {
+  if (document.hidden) return;
+  for (const [frame, state] of visibleFrames) {
+    if (activePlayers.size >= 2) break;
+    if (state.played || activePlayers.has(frame)) continue;
+    state.played = true;
+    const video = document.createElement('video');
+    video.controls = true;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.preload = 'none';
+    video.setAttribute('aria-label', frame.getAttribute('aria-label'));
+    video.addEventListener('ended', () => {
+      if ([...visibleFrames.values()].some(candidate => !candidate.played)) {
+        releasePlayer(frame);
+        fillPlayers();
+      } else {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+    });
+    activePlayers.set(frame, video);
+    frame.querySelector('.video-poster').hidden = true;
+    frame.append(video);
+    video.src = frame.dataset.video;
+    video.play().catch(() => {}); // Keep native controls available; never retry failed requests automatically.
+  }
 };
 const playbackObserver = new IntersectionObserver(entries => {
-  if (entries.some(entry => entry.target === activePreview?.parentElement && !entry.isIntersecting)) releasePlayer();
-});
-document.querySelectorAll('.video-preview').forEach(preview => {
-  preview.addEventListener('click', () => {
-    releasePlayer();
-    activePreview = preview;
-    preview.hidden = true;
-    preview.parentElement.append(player);
-    player.setAttribute('aria-label', preview.getAttribute('aria-label').replace(/^Play /, ''));
-    player.muted = true;
-    player.src = preview.dataset.video;
-    playbackObserver.observe(preview.parentElement);
-    player.play().catch(() => {}); // Native controls stay available; never retry requests automatically.
+  entries.forEach(({ target: frame, isIntersecting, intersectionRatio }) => {
+    if (intersectionRatio >= 0.5 && !visibleFrames.has(frame)) visibleFrames.set(frame, { played: false });
+    else if (!isIntersecting) {
+      visibleFrames.delete(frame);
+      releasePlayer(frame);
+    }
   });
-});
-document.addEventListener('visibilitychange', () => { if (document.hidden) releasePlayer(); });
-window.addEventListener('pagehide', releasePlayer);
+  fillPlayers();
+}, { threshold: [0, 0.5] });
+document.querySelectorAll('.video-frame').forEach(frame => playbackObserver.observe(frame));
+const stopPlayers = () => {
+  [...activePlayers.keys()].forEach(releasePlayer);
+  visibleFrames.forEach(state => { state.played = false; });
+};
+document.addEventListener('visibilitychange', () => { if (document.hidden) stopPlayers(); else fillPlayers(); });
+window.addEventListener('pagehide', stopPlayers);
+window.addEventListener('pageshow', fillPlayers);
