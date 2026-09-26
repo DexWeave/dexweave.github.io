@@ -19,74 +19,37 @@ document.querySelectorAll('.simulation-grid').forEach(grid => {
   });
 });
 
-const posterObserver = new IntersectionObserver(entries => {
-  entries.forEach(({ target, isIntersecting }) => {
-    if (!isIntersecting) return;
-    target.src = target.dataset.src;
-    delete target.dataset.src;
-    posterObserver.unobserve(target);
-  });
-}, { rootMargin: '150px' });
-document.querySelectorAll('.video-poster').forEach(image => posterObserver.observe(image));
-
-// Autoplay only visible cards, with at most two downloads/decoders at a time.
-const visibleFrames = new Map();
-const activePlayers = new Map();
-const releasePlayer = frame => {
-  const video = activePlayers.get(frame);
-  if (!video) return;
-  activePlayers.delete(frame);
-  video.pause();
-  video.removeAttribute('src');
-  video.load();
-  video.remove();
-  frame.querySelector('.video-poster').hidden = false;
-};
-const fillPlayers = () => {
-  if (document.hidden) return;
-  for (const [frame, state] of visibleFrames) {
-    if (activePlayers.size >= 2) break;
-    if (state.played || activePlayers.has(frame)) continue;
-    state.played = true;
-    const video = document.createElement('video');
-    video.controls = true;
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.preload = 'none';
-    video.poster = frame.querySelector('.video-poster').src;
+// Load all covers first; start every visible video without a concurrency cap.
+const frames = [...document.querySelectorAll('.video-frame')];
+const visibleFrames = new Set();
+const players = new Map();
+let pageReady = false;
+const updateFrame = frame => {
+  let video = players.get(frame);
+  if (!pageReady || document.hidden || !visibleFrames.has(frame)) { video?.pause(); return; }
+  if (!video) {
+    const poster = frame.querySelector('.video-poster');
+    video = document.createElement('video');
+    video.controls = video.muted = video.defaultMuted = video.loop = video.playsInline = true;
+    video.preload = 'auto';
+    video.poster = poster.src;
     video.setAttribute('aria-label', frame.getAttribute('aria-label'));
-    video.addEventListener('ended', () => {
-      if ([...visibleFrames.values()].some(candidate => !candidate.played)) {
-        releasePlayer(frame);
-        fillPlayers();
-      } else {
-        video.currentTime = 0;
-        video.play().catch(() => {});
-      }
-    });
-    activePlayers.set(frame, video);
-    frame.querySelector('.video-poster').hidden = true;
-    frame.append(video);
+    players.set(frame, video);
+    poster.replaceWith(video);
     video.src = frame.dataset.video;
-    video.play().catch(() => {}); // Keep native controls available; never retry failed requests automatically.
   }
+  video.play().catch(() => {});
 };
-const playbackObserver = new IntersectionObserver(entries => {
-  entries.forEach(({ target: frame, isIntersecting, intersectionRatio }) => {
-    if (intersectionRatio >= 0.5 && !visibleFrames.has(frame)) visibleFrames.set(frame, { played: false });
-    else if (!isIntersecting) {
-      visibleFrames.delete(frame);
-      releasePlayer(frame);
-    }
+const updatePlayback = () => frames.forEach(updateFrame);
+const pauseVideos = () => players.forEach(video => video.pause());
+const visibilityObserver = new IntersectionObserver(entries => {
+  entries.forEach(({ target, isIntersecting }) => {
+    if (isIntersecting) visibleFrames.add(target); else visibleFrames.delete(target);
+    updateFrame(target);
   });
-  fillPlayers();
-}, { threshold: [0, 0.5] });
-document.querySelectorAll('.video-frame').forEach(frame => playbackObserver.observe(frame));
-const stopPlayers = () => {
-  [...activePlayers.keys()].forEach(releasePlayer);
-  visibleFrames.forEach(state => { state.played = false; });
-};
-document.addEventListener('visibilitychange', () => { if (document.hidden) stopPlayers(); else fillPlayers(); });
-window.addEventListener('pagehide', stopPlayers);
-window.addEventListener('pageshow', fillPlayers);
+});
+frames.forEach(frame => visibilityObserver.observe(frame));
+window.addEventListener('load', () => { pageReady = true; updatePlayback(); }, { once: true });
+document.addEventListener('visibilitychange', updatePlayback);
+window.addEventListener('pagehide', pauseVideos);
+window.addEventListener('pageshow', updatePlayback);

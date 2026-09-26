@@ -41,7 +41,6 @@ figure + .reading { margin-top: 1.5rem; }
 .simulation-item { overflow: hidden; text-align: center; background: white; border-radius: 6px; box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
 .video-frame { aspect-ratio: 16 / 9; background: #242424; }
 .video-frame video, .video-poster { display: block; width: 100%; height: 100%; object-fit: contain; }
-.video-poster[hidden] { display: none; }
 .retargeting-item { display: flex; flex-direction: column; }
 .retargeting-item .simulation-label { display: flex; flex: 1; align-items: center; justify-content: center; min-height: 3.4rem; overflow-wrap: anywhere; }
 .simulation-label { margin: 0; padding: .75rem; font-size: .95rem; font-weight: 600; line-height: 1.3; color: #333; }
