@@ -4,6 +4,7 @@ import hashlib
 import pathlib
 import re
 import subprocess
+import tempfile
 
 root = pathlib.Path(__file__).resolve().parents[1]
 index = root / 'index.html'
@@ -14,7 +15,11 @@ for relative in paths:
     data = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(video), '-map', '0:v:0', '-c', 'copy', '-an', '-map_metadata', '-1', '-movflags', 'frag_keyframe+empty_moov+default_base_moof', '-f', 'mp4', 'pipe:1'], check=True, stdout=subprocess.PIPE).stdout
     avcc = data.index(b'avcC')
     codec = 'avc1.' + data[avcc + 5:avcc + 8].hex()
-    duration = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', '-i', 'pipe:0'], input=data, check=True, stdout=subprocess.PIPE).stdout.decode().strip()
+    # A seekable file reports the full duration instead of just the first fragment.
+    with tempfile.NamedTemporaryFile(suffix='.mp4') as stream:
+        stream.write(data)
+        stream.flush()
+        duration = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(stream.name)], check=True, stdout=subprocess.PIPE).stdout.decode().strip()
     part_size = 1024 * 1024 - 1
     parts = [data[start:start + part_size] for start in range(0, len(data), part_size)]
     for old_part in video.parent.glob(video.name + '.part*.js'):

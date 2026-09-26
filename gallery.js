@@ -23,28 +23,28 @@ document.querySelectorAll('.simulation-grid').forEach(grid => {
 const frames = [...document.querySelectorAll('.video-frame')];
 const visibleFrames = new Set();
 const players = new Map();
-const pendingParts = [];
+let pageActive = true;
+const isVisible = frame => pageActive && !document.hidden && visibleFrames.has(frame);
 const updateFrame = frame => {
-  let video = players.get(frame);
-  if (document.hidden || !visibleFrames.has(frame)) { video?.pause(); return; }
-  if (!video) {
+  let player = players.get(frame);
+  if (!isVisible(frame)) { player?.video.pause(); return; }
+  if (!player) {
     const poster = frame.querySelector('.video-poster');
-    video = document.createElement('video');
+    const video = document.createElement('video');
     video.controls = video.muted = video.defaultMuted = video.loop = video.playsInline = true;
     video.disableRemotePlayback = true;
     video.preload = 'auto';
     video.poster = poster.src;
     video.setAttribute('aria-label', frame.getAttribute('aria-label'));
-    players.set(frame, video);
     poster.replaceWith(video);
     // Append fragmented MP4 data as it arrives, without waiting for the whole clip.
-    const parts = new Array(Number(frame.dataset.parts));
+    const partCount = Number(frame.dataset.parts);
     const media = new (window.MediaSource || window.ManagedMediaSource)();
-    let buffer, nextPart = 0;
+    let buffer, pendingPart, nextPart = 0, loading = false;
     const appendPart = () => {
       if (!buffer || buffer.updating) return;
-      if (parts[nextPart]) { buffer.appendBuffer(parts[nextPart]); parts[nextPart++] = null; }
-      else if (nextPart === parts.length && media.readyState === 'open') media.endOfStream();
+      if (pendingPart) { buffer.appendBuffer(pendingPart); pendingPart = null; nextPart++; }
+      else if (nextPart === partCount && media.readyState === 'open') media.endOfStream();
     };
     media.addEventListener('sourceopen', () => {
       media.duration = Number(frame.dataset.duration);
@@ -54,28 +54,28 @@ const updateFrame = frame => {
     }, { once: true });
     // WebKit binds the source directly; other engines attach its object URL.
     if (window.ManagedMediaSource) video.srcObject = media; else video.src = URL.createObjectURL(media);
-    for (let index = 0; index < parts.length; index++) {
+    const loadPart = () => {
+      if (!isVisible(frame) || loading || pendingPart || buffer?.updating || nextPart === partCount) return;
+      loading = true;
       const source = document.createElement('script');
       const url = new URL(frame.dataset.video, document.baseURI);
-      url.pathname += `.part${String(index + 1).padStart(2, '0')}.js`;
+      url.pathname += `.part${String(nextPart + 1).padStart(2, '0')}.js`;
       source.src = url.href;
       source.addEventListener('video-data', ({ detail }) => {
-        parts[index] = detail;
+        pendingPart = detail;
+        loading = false;
         appendPart();
       }, { once: true });
       source.addEventListener('load', () => source.remove(), { once: true });
-      (pendingParts[index] ||= []).push([frame, source]);
-    }
+      frame.append(source);
+    };
+    player = { video, loadPart };
+    players.set(frame, player);
   }
-  video.play().catch(() => {});
+  player.loadPart();
+  player.video.play().catch(() => {});
 };
-const updatePlayback = () => {
-  frames.forEach(updateFrame);
-  // Submit each visible clip's first part before any clip's second part.
-  pendingParts.flat().forEach(([frame, source]) => frame.append(source));
-  pendingParts.length = 0;
-};
-const pauseVideos = () => players.forEach(video => video.pause());
+const updatePlayback = () => frames.forEach(updateFrame);
 const visibilityObserver = new IntersectionObserver(entries => {
   entries.forEach(({ target, isIntersecting }) => {
     if (isIntersecting) visibleFrames.add(target); else visibleFrames.delete(target);
@@ -84,5 +84,5 @@ const visibilityObserver = new IntersectionObserver(entries => {
 });
 frames.forEach(frame => visibilityObserver.observe(frame));
 document.addEventListener('visibilitychange', updatePlayback);
-window.addEventListener('pagehide', pauseVideos);
-window.addEventListener('pageshow', updatePlayback);
+window.addEventListener('pagehide', () => { pageActive = false; updatePlayback(); });
+window.addEventListener('pageshow', () => { pageActive = true; updatePlayback(); });
