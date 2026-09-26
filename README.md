@@ -14,12 +14,12 @@ When replacing either image, also update its `-small.webp` version and the HTML 
 
 ## Videos
 
-The galleries use repository-local H.264 MP4 files and PNG poster frames. Keep one MP4 source per video to limit requests to the anonymous review host. Retargeting and Sim-to-Sim videos use four desktop columns; Real robot results has separate three-video Loco-Manipulation and Locomotion grids. Real-robot MP4s have no audio tracks and no visible per-video captions.
+The galleries use repository-local H.264 MP4 files and small JPEG poster frames. Opening or scrolling the page loads only nearby posters. Clicking a poster attaches a single shared player and starts that MP4; selecting another video, scrolling the player offscreen, or hiding the page releases its source. There is no video prefetch, background playback, or automatic network retry. The hosting service still controls its own request limits.
 
-Edit a video's `aria-label` for its accessible description and `.simulation-label` where a visible caption is used. `gallery.js` builds the mobile carousels from the desktop grids, so each item only needs to be edited once.
+Retargeting and Sim-to-Sim Loco-Manipulation videos use four desktop columns. Sim-to-Sim Locomotion has three columns at the same card width. Real robot results has separate three-video Loco-Manipulation and Locomotion grids spanning the full gallery width. Real-robot MP4s have no audio tracks and no visible per-video captions.
+
+Edit a preview button's `data-video` for the MP4 path and its image's `data-src` for the poster. Edit `aria-label` for the accessible description and `.simulation-label` where a visible caption is used. Mobile uses the same cards in a native scroll-snap gallery with previous/next controls; no video nodes are cloned.
 
 ## Template and fonts
 
-Layout, typography, and video presentation are adapted from OmniRetarget, whose template credits Nerfies and BeyondMimic. Titles use Google Sans and body text uses Noto Sans. Fonts and template libraries are hosted locally; their licenses are included in `assets/fonts/` and `assets/vendor/`.
-
-The carousel includes a local resize fix: slide dimensions are recalculated on every viewport resize, including within the same breakpoint.
+Layout, typography, and video presentation are adapted from OmniRetarget, whose template credits Nerfies and BeyondMimic. Titles use Google Sans and body text uses Noto Sans. Fonts and Bulma CSS are hosted locally; their licenses are included in `assets/fonts/` and `assets/vendor/`.
