@@ -8,7 +8,7 @@ Edit `index.html` for content and `styles.css` for appearance. Commit to `main`,
 
 - Teaser: manuscript Figure 1, `figures/robot.pdf` → `assets/teaser.webp`.
 - Method: manuscript Figure 2, `figures/retarget_pipeline.pdf` → `assets/method-overview.webp`.
-- Tables: current manuscript experiments and ablation tables. Unreported policy results use an em dash.
+- Tables: main-text retargeting and MuJoCo sim-to-sim policy results from the current manuscript. Ablation tables are omitted.
 
 When replacing either image, also update its `-small.webp` version and the HTML image dimensions.
 
