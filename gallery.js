@@ -23,7 +23,6 @@ document.querySelectorAll('.simulation-grid').forEach(grid => {
 const frames = [...document.querySelectorAll('.video-frame')];
 const visibleFrames = new Set();
 const players = new Map();
-const downloads = new Map();
 let pageReady = false;
 const updateFrame = frame => {
   let video = players.get(frame);
@@ -37,26 +36,24 @@ const updateFrame = frame => {
     video.setAttribute('aria-label', frame.getAttribute('aria-label'));
     players.set(frame, video);
     poster.replaceWith(video);
-    // A media document supplies a local, seekable Blob with one host request.
-    const source = document.createElement('iframe');
-    const url = new URL(frame.dataset.video, document.baseURI);
-    url.pathname += '.svg';
-    source.hidden = true;
-    source.title = 'Video data';
-    source.src = url.href;
-    frame.append(source);
-    downloads.set(source.contentWindow, { frame, source });
+    // Small data files avoid the anonymous host's large-file processing limit.
+    const parts = new Array(Number(frame.dataset.parts));
+    let remaining = parts.length;
+    for (let index = 0; index < parts.length; index++) {
+      const source = document.createElement('script');
+      const url = new URL(frame.dataset.video, document.baseURI);
+      url.pathname += `.part${String(index + 1).padStart(2, '0')}.js`;
+      source.src = url.href;
+      source.addEventListener('video-data', ({ detail }) => {
+        parts[index] = detail;
+        if (--remaining === 0) { video.src = URL.createObjectURL(new Blob(parts, { type: 'video/mp4' })); updateFrame(frame); }
+      }, { once: true });
+      source.addEventListener('load', () => source.remove(), { once: true });
+      frame.append(source);
+    }
   }
   if (video.src) video.play().catch(() => {});
 };
-window.addEventListener('message', event => {
-  const pending = downloads.get(event.source);
-  if (!pending || event.data?.type !== 'video-data' || !(event.data.blob instanceof Blob)) return;
-  players.get(pending.frame).src = URL.createObjectURL(event.data.blob);
-  downloads.delete(event.source);
-  pending.source.remove();
-  updateFrame(pending.frame);
-});
 const updatePlayback = () => frames.forEach(updateFrame);
 const pauseVideos = () => players.forEach(video => video.pause());
 const visibilityObserver = new IntersectionObserver(entries => {

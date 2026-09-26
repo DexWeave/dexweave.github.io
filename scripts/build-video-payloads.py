@@ -11,12 +11,22 @@ paths = dict.fromkeys(url.split('?')[0] for url in re.findall(r'data-video="([^"
 for relative in paths:
     video = root / relative
     data = video.read_bytes()
-    parts = ['<svg xmlns="http://www.w3.org/2000/svg"><script><![CDATA[const chunks=[];]]></script>']
-    for start in range(0, len(data), 384 * 1024):
-        encoded = base64.b64encode(data[start:start + 384 * 1024]).decode('ascii')
-        parts.append('<script><![CDATA[chunks.push(Uint8Array.from(atob("' + encoded + '"),c=>c.charCodeAt(0)));]]></script>')
-    parts.append('<script><![CDATA[parent.postMessage({type:"video-data",blob:new Blob(chunks,{type:"video/mp4"})},"*");]]></script></svg>')
-    video.with_suffix('.mp4.svg').write_text('\n'.join(parts) + '\n')
-    html = re.sub(r'data-video="' + re.escape(relative) + r'(?:\?[^"]*)?"', 'data-video="' + relative + '?v=' + hashlib.sha256(data).hexdigest()[:12] + '"', html)
+    part_size = 1024 * 1024 - 1
+    parts = [data[start:start + part_size] for start in range(0, len(data), part_size)]
+    for old_part in video.parent.glob(video.name + '.part*.js'):
+        old_part.unlink()
+    for number, part in enumerate(parts, 1):
+        encoded = base64.b64encode(part).decode('ascii')
+        video.with_suffix(f'.mp4.part{number:02d}.js').write_text('document.currentScript.dispatchEvent(new CustomEvent("video-data",{detail:Uint8Array.from(atob("' + encoded + '"),c=>c.charCodeAt(0))}));\n')
+    html = re.sub(r'data-video="' + re.escape(relative) + r'(?:\?[^"]*)?"(?: data-parts="\d+")?', 'data-video="' + relative + '?v=' + hashlib.sha256(data).hexdigest()[:12] + '" data-parts="' + str(len(parts)) + '"', html)
+
+def inline_cover(match):
+    tag = match[0]
+    path = re.search(r'data-poster="([^"]+)"', tag) or re.search(r'src="([^"]+)"', tag)
+    data = base64.b64encode((root / path[1]).read_bytes()).decode('ascii')
+    tag = re.sub(r'src="[^"]*"', 'src="data:image/jpeg;base64,' + data + '"', tag)
+    return tag if 'data-poster=' in tag else tag.replace('<img ', '<img data-poster="' + path[1] + '" ', 1)
+
+html = re.sub(r'<img\b(?=[^>]*class="video-poster")[^>]*>', inline_cover, html)
 index.write_text(html)
 print(f'Packaged {len(paths)} videos.')
