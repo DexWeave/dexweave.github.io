@@ -23,6 +23,7 @@ document.querySelectorAll('.simulation-grid').forEach(grid => {
 const frames = [...document.querySelectorAll('.video-frame')];
 const visibleFrames = new Set();
 const players = new Map();
+const downloads = new Map();
 let pageReady = false;
 const updateFrame = frame => {
   let video = players.get(frame);
@@ -36,17 +37,26 @@ const updateFrame = frame => {
     video.setAttribute('aria-label', frame.getAttribute('aria-label'));
     players.set(frame, video);
     poster.replaceWith(video);
-    // Load through a script so the anonymous host needs neither byte ranges nor CORS.
-    const source = document.createElement('script');
+    // A media document supplies a local, seekable Blob with one host request.
+    const source = document.createElement('iframe');
     const url = new URL(frame.dataset.video, document.baseURI);
-    url.pathname += '.js';
+    url.pathname += '.svg';
+    source.hidden = true;
+    source.title = 'Video data';
     source.src = url.href;
-    source.addEventListener('video-data', ({ detail }) => { video.src = URL.createObjectURL(detail); updateFrame(frame); }, { once: true });
-    source.addEventListener('load', () => source.remove(), { once: true });
     frame.append(source);
+    downloads.set(source.contentWindow, { frame, source });
   }
   if (video.src) video.play().catch(() => {});
 };
+window.addEventListener('message', event => {
+  const pending = downloads.get(event.source);
+  if (!pending || event.data?.type !== 'video-data' || !(event.data.blob instanceof Blob)) return;
+  players.get(pending.frame).src = URL.createObjectURL(event.data.blob);
+  downloads.delete(event.source);
+  pending.source.remove();
+  updateFrame(pending.frame);
+});
 const updatePlayback = () => frames.forEach(updateFrame);
 const pauseVideos = () => players.forEach(video => video.pause());
 const visibilityObserver = new IntersectionObserver(entries => {

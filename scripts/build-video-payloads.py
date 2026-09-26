@@ -11,8 +11,12 @@ paths = dict.fromkeys(url.split('?')[0] for url in re.findall(r'data-video="([^"
 for relative in paths:
     video = root / relative
     data = video.read_bytes()
-    encoded = base64.b64encode(data).decode('ascii')
-    video.with_suffix('.mp4.js').write_text('document.currentScript.dispatchEvent(new CustomEvent("video-data",{detail:new Blob([Uint8Array.from(atob("' + encoded + '"),c=>c.charCodeAt(0))],{type:"video/mp4"})}));\n')
+    parts = ['<svg xmlns="http://www.w3.org/2000/svg"><script><![CDATA[const chunks=[];]]></script>']
+    for start in range(0, len(data), 384 * 1024):
+        encoded = base64.b64encode(data[start:start + 384 * 1024]).decode('ascii')
+        parts.append('<script><![CDATA[chunks.push(Uint8Array.from(atob("' + encoded + '"),c=>c.charCodeAt(0)));]]></script>')
+    parts.append('<script><![CDATA[parent.postMessage({type:"video-data",blob:new Blob(chunks,{type:"video/mp4"})},"*");]]></script></svg>')
+    video.with_suffix('.mp4.svg').write_text('\n'.join(parts) + '\n')
     html = re.sub(r'data-video="' + re.escape(relative) + r'(?:\?[^"]*)?"', 'data-video="' + relative + '?v=' + hashlib.sha256(data).hexdigest()[:12] + '"', html)
 index.write_text(html)
 print(f'Packaged {len(paths)} videos.')
