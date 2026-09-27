@@ -6,7 +6,7 @@ Edit `index.html` for content and `styles.css` for appearance. Changes pushed to
 
 ## Authors
 
-Naichuan Sun<sup>1,2,*</sup>, Haotian Shen<sup>1,*</sup>, Luying Feng<sup>1</sup>, Haoze Wang<sup>1</sup>, Yizhang Zhang<sup>1</sup>, Yuanbo Xiangli<sup>2</sup>, Yaochu Jin<sup>1</sup>, Peidong Liu<sup>1,†</sup>.
+[Naichuan Sun](https://naichuan04.github.io)<sup>1,2,*</sup>, [Haotian Shen](https://github.com/Tesla-SHT/)<sup>1,*</sup>, Yizhang Zhang<sup>1</sup>, [Luying Feng](https://fengluying.github.io/)<sup>1</sup>, Haoze Wang<sup>1</sup>, [Yuanbo Xiangli](https://kam1107.github.io/)<sup>2</sup>, [Yaochu Jin](https://en.westlake.edu.cn/faculty/yaochu-jin.html)<sup>1</sup>, [Peidong Liu](https://ethliup.github.io/)<sup>1,†</sup>.
 
 <sup>1</sup>Department of Artificial Intelligence, School of Engineering, Westlake University<br>
 <sup>2</sup>School of Artificial Intelligence, Shanghai Jiao Tong University
@@ -36,3 +36,5 @@ Edit a frame's `data-video` for the MP4 path and its image's `data-poster` for t
 ## Template and fonts
 
 Layout, typography, and video presentation are adapted from OmniRetarget, whose template credits Nerfies and BeyondMimic. Titles use Google Sans and body text uses Noto Sans. Fonts and Bulma CSS are hosted locally; their licenses are included in `assets/fonts/` and `assets/vendor/`.
+
+The Paper and GitHub resource icons are from Font Awesome Free (CC BY 4.0); the arXiv icon is from Academicons by James Walsh (SIL OFL 1.1). Original icons and license notices are included in `assets/icons/`. The three resource buttons are placeholders until their publication URLs are available.
