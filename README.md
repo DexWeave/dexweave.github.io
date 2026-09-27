@@ -1,8 +1,17 @@
 # DexWeave project website
 
-[Open the anonymous review site](https://anonymous.4open.science/w/review-site-f533e2f81fcb/index.html).
+[Open the project website](https://dexweave.github.io/).
 
-Edit `index.html` for content and `styles.css` for appearance. Commit to `main`, then refresh the review mirror in the Anonymous GitHub dashboard.
+Edit `index.html` for content and `styles.css` for appearance. Changes pushed to `main` are automatically published by GitHub Pages from the repository root.
+
+## Authors
+
+Naichuan Sun<sup>1,2,*</sup>, Haotian Shen<sup>1,*</sup>, Luying Feng<sup>1</sup>, Haoze Wang<sup>1</sup>, Yizhang Zhang<sup>1</sup>, Yuanbo Xiangli<sup>2</sup>, Yaochu Jin<sup>1</sup>, Peidong Liu<sup>1,†</sup>.
+
+<sup>1</sup>Department of Artificial Intelligence, School of Engineering, Westlake University<br>
+<sup>2</sup>School of Artificial Intelligence, Shanghai Jiao Tong University
+
+<sup>*</sup>Equal contribution. <sup>†</sup>Corresponding author.
 
 ## Figures and tables
 
