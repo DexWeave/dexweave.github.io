@@ -37,4 +37,4 @@ Edit a frame's `data-video` for the MP4 path and its image's `data-poster` for t
 
 Layout, typography, and video presentation are adapted from OmniRetarget, whose template credits Nerfies and BeyondMimic. Titles use Google Sans and body text uses Noto Sans. Fonts and Bulma CSS are hosted locally; their licenses are included in `assets/fonts/` and `assets/vendor/`.
 
-The Paper and GitHub resource icons are from Font Awesome Free (CC BY 4.0); the arXiv icon is from Academicons by James Walsh (SIL OFL 1.1). Original icons and license notices are included in `assets/icons/`. The three resource buttons are placeholders until their publication URLs are available.
+The Paper and GitHub resource icons are from Font Awesome Free (CC BY 4.0); the arXiv icon is from Academicons by James Walsh (SIL OFL 1.1). Original icons and license notices are included in `assets/icons/`. Paper links to `dexweave.pdf` in the repository root. The arXiv and Code buttons remain placeholders until their publication URLs are available.
