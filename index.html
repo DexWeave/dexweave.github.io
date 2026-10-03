@@ -19,7 +19,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/vendor/bulma.min.css">
-  <link rel="stylesheet" href="styles.css?v=20260927-links">
+  <link rel="stylesheet" href="styles.css?v=20261003-citation">
   <script src="gallery.js?v=viewport-6" defer></script>
   <title>DexWeave | Dexterous Humanoid Loco-Manipulation</title>
 </head>
@@ -189,6 +189,15 @@
         <div class="table-scroll" role="region" aria-label="Body-only tracking performance" tabindex="0"><table class="results-table"><caption>Body-only tracking performance</caption><thead><tr><th scope="col">Method</th><th scope="col">Completion ratio<br>(%) ↑</th><th scope="col">Body-position error<br>(cm) ↓</th><th scope="col">Anchor-position error<br>(cm) ↓</th><th scope="col">Anchor-rotation error<br>(deg) ↓</th></tr></thead><tbody><tr><th scope="row">Any2Track</th><td>72.82</td><td>6.09</td><td>44.88</td><td>32.07</td></tr><tr><th scope="row">GMT</th><td>69.86</td><td>5.85</td><td>36.06</td><td>21.92</td></tr><tr><th scope="row">BeyondMimic</th><td><strong>100</strong></td><td>2.82</td><td>5.19</td><td>2.48</td></tr><tr class="ours"><th scope="row">DexWeave (Ours)</th><td><strong>100</strong></td><td><strong>2.62</strong></td><td><strong>4.82</strong></td><td><strong>2.34</strong></td></tr></tbody></table></div><p class="table-note">MuJoCo sim-to-sim evaluation, averaged equally over five tracking motions. DexWeave trains a separate policy for each reference sequence; Any2Track and GMT are included as general motion-tracking baselines. Completion ratio is the percentage of evaluation episodes reaching the reference end or time limit. Best values are in bold.</p><div class="table-scroll" role="region" aria-label="Dexterous loco-manipulation performance" tabindex="0"><table class="results-table"><caption>Dexterous loco-manipulation performance</caption><thead><tr><th scope="col">Method</th><th scope="col">Success rate<br>(%) ↑</th><th scope="col">Body-position error<br>(cm) ↓</th><th scope="col">Object-position error<br>(cm) ↓</th><th scope="col">Object-rotation error<br>(deg) ↓</th></tr></thead><tbody><tr><th scope="row">InterMimic</th><td>57.74</td><td>6.51</td><td>3.58</td><td>7.71</td></tr><tr><th scope="row">Object MLP</th><td>85.00</td><td>5.69</td><td>3.84</td><td><strong>6.16</strong></td></tr><tr class="ours"><th scope="row">DexWeave (Ours)</th><td><strong>97.5</strong></td><td><strong>4.93</strong></td><td><strong>3.43</strong></td><td>6.83</td></tr></tbody></table></div><p class="table-note">MuJoCo sim-to-sim evaluation, averaged equally over five loco-manipulation references. InterMimic is trained and evaluated using the SMPL model. Best values are in bold.</p>
       </div></section>
     </div></div>
+    <section class="section" id="citation"><div class="container is-max-desktop">
+      <h2 class="title is-2 has-text-centered">Citation</h2>
+      <pre class="citation-bibtex"><code>@article{sun2026dexweave,
+  author  = {Sun, Naichuan and Shen, Haotian and Zhang, Yizhang and Feng, Luying and Wang, Haoze and Xiangli, Yuanbo and Jin, Yaochu and Liu, Peidong},
+  title   = {DexWeave: Learning Dexterous Humanoid Loco-Manipulation from Human Demonstrations},
+  journal = {arXiv},
+  year    = {2026},
+}</code></pre>
+    </div></section>
   </main>
   <footer class="footer"><p>Template: <a href="https://omniretarget.github.io/">OmniRetarget</a> / <a href="https://nerfies.github.io/">Nerfies</a>.</p></footer>
 </body>

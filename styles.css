@@ -36,6 +36,7 @@ figcaption { margin-top: .6rem; text-align: center; color: #777; font-size: .85r
 .reading.content p:not(:last-child) { margin-bottom: .9rem; }
 figure + .reading { margin-top: 1.5rem; }
 .reading + figure { margin-top: 1.5rem; }
+.citation-bibtex { padding: 1.25rem 1.5rem; border-radius: 6px; background: #f1efe9; font-size: .85rem; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
 /* Video grid and typography adapted from the OmniRetarget template. */
 .gallery-shell { position: relative; }
 .gallery-nav { display: none; }
